@@ -12,6 +12,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.sujeevuthayakumar.noteme.databinding.FragmentFirstBinding;
 
+import java.util.List;
+
 public class FirstFragment extends Fragment {
 
     private FragmentFirstBinding binding;
@@ -21,7 +23,9 @@ public class FirstFragment extends Fragment {
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(getContext());
+        List<NoteModel> noteModelList = dataBaseHelper.getEveryone();
+        System.out.println(noteModelList);
         binding = FragmentFirstBinding.inflate(inflater, container, false);
         return binding.getRoot();
 
@@ -35,6 +39,7 @@ public class FirstFragment extends Fragment {
             public void onClick(View view) {
                 NavHostFragment.findNavController(FirstFragment.this)
                         .navigate(R.id.action_FirstFragment_to_SecondFragment);
+
             }
         });
     }

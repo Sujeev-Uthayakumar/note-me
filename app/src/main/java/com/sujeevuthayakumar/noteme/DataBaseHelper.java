@@ -1,10 +1,15 @@
 package com.sujeevuthayakumar.noteme;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
@@ -33,5 +38,49 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
+    }
+
+    public boolean addOne(NoteModel noteModel) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(COLUMN_NOTE_TITLE, noteModel.getTitle());
+        cv.put(COLUMN_NOTE_SUBTITLE, noteModel.getSubTitle());
+        cv.put(COLUMN_NOTE, noteModel.getNote());
+        cv.put(COLUMN_NOTE_COLOR, noteModel.getNoteColor());
+
+        long insert = db.insert(NOTE_TABLE, null, cv);
+
+        return insert != -1;
+    }
+
+    public List<NoteModel> getEveryone() {
+        List<NoteModel> returnList = new ArrayList<>();
+
+        // get data from the database
+
+        String queryString = "SELECT * FROM " + NOTE_TABLE;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(queryString, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                int noteID = cursor.getInt(0);
+                String noteTitle = cursor.getString(1);
+                String noteSubtitle = cursor.getString(2);
+                String note = cursor.getString(3);
+                String noteColor = cursor.getString(4);
+
+                NoteModel newNote = new NoteModel(noteID, noteTitle, noteSubtitle, note, noteColor);
+                returnList.add(newNote);
+            } while (cursor.moveToNext());
+        } else {
+
+        }
+
+        cursor.close();
+        db.close();
+        return returnList;
     }
 }

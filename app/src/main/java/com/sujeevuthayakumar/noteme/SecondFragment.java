@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -46,7 +47,17 @@ public class SecondFragment extends Fragment {
                     String subTitle = binding.editSubtitle.getText().toString();
                     String note = binding.editNote.getText().toString();
 
-                    NoteModel noteModel = new NoteModel(-1, title, subTitle, note, noteColor);
+                    NoteModel noteModel;
+                    try {
+                        noteModel = new NoteModel(-1, title, subTitle, note, noteColor);
+                    } catch (Exception e) {
+                        System.out.println("L");
+                        noteModel = new NoteModel(-1, "error", "error", "error", "error");
+                    }
+
+                    DataBaseHelper dataBaseHelper = new DataBaseHelper(getContext());
+                    boolean success = dataBaseHelper.addOne(noteModel);
+                    Toast.makeText(getContext(), "Success= " + success, Toast.LENGTH_SHORT).show();
                 }
                 styleErrorInputs(view);
             }
