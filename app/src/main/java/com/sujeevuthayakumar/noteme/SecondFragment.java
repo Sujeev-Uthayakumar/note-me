@@ -20,7 +20,7 @@ import com.sujeevuthayakumar.noteme.databinding.FragmentSecondBinding;
 public class SecondFragment extends Fragment {
 
     private FragmentSecondBinding binding;
-
+    private String noteColor;
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -30,6 +30,7 @@ public class SecondFragment extends Fragment {
         binding.editNote.setBackgroundColor(getResources().getColor(R.color.lightblue));
         binding.blue.setBackgroundColor(getResources().getColor(R.color.purple));
         binding.blue.setTextColor(Color.WHITE);
+        this.noteColor = "blue";
         return binding.getRoot();
 
     }
@@ -41,7 +42,11 @@ public class SecondFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (!areInputsEmpty(view)) {
-                    System.out.println("it works");
+                    String title = binding.editTitle.getText().toString();
+                    String subTitle = binding.editSubtitle.getText().toString();
+                    String note = binding.editNote.getText().toString();
+
+                    NoteModel noteModel = new NoteModel(-1, title, subTitle, note, noteColor);
                 }
                 styleErrorInputs(view);
             }
@@ -56,20 +61,20 @@ public class SecondFragment extends Fragment {
                 if (checkedId == R.id.blue) {
                     checkedButton.setBackgroundColor(getResources().getColor(R.color.purple));
                     checkedButton.setTextColor(Color.WHITE);
+                    noteColor = "blue";
                     editText.setBackgroundColor(getResources().getColor(R.color.lightblue));
                 } else if (checkedId == R.id.red) {
                     checkedButton.setBackgroundColor(getResources().getColor(R.color.purple));
                     checkedButton.setTextColor(Color.WHITE);
                     editText.setBackgroundColor(getResources().getColor(R.color.lightred));
+                    noteColor = "red";
                 } else if (checkedId == R.id.yellow) {
                     checkedButton.setBackgroundColor(getResources().getColor(R.color.purple));
                     checkedButton.setTextColor(Color.WHITE);
                     editText.setBackgroundColor(getResources().getColor(R.color.lightyellow));
-                } else {
-                    checkedButton.setBackgroundColor(getResources().getColor(R.color.purple));
-                    checkedButton.setTextColor(Color.WHITE);
-                    editText.setBackgroundColor(getResources().getColor(R.color.lightblue));
+                    noteColor = "yellow";
                 }
+                System.out.println(noteColor);
             }
         });
     }
