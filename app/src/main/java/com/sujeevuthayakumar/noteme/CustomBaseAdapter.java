@@ -44,8 +44,12 @@ public class CustomBaseAdapter extends BaseAdapter implements Filterable {
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflater.inflate(R.layout.activity_custom_list_view, null);
         styleNote(noteModelList.get(i), view);
-        TextView txtView = (TextView) view.findViewById(R.id.list_title);
-        txtView.setText(noteModelList.get(i).getTitle());
+        TextView titleView = (TextView) view.findViewById(R.id.list_title);
+        titleView.setText(noteModelList.get(i).getTitle());
+        TextView subtitleView = (TextView) view.findViewById(R.id.list_subtitle);
+        subtitleView.setText(noteModelList.get(i).getSubTitle());
+        TextView noteView = (TextView) view.findViewById(R.id.list_note);
+        noteView.setText(noteModelList.get(i).getNote());
         return view;
     }
 

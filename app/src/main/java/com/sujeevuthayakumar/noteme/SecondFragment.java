@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.sujeevuthayakumar.noteme.databinding.FragmentSecondBinding;
@@ -57,7 +58,10 @@ public class SecondFragment extends Fragment {
 
                     DataBaseHelper dataBaseHelper = new DataBaseHelper(getContext());
                     boolean success = dataBaseHelper.addOne(noteModel);
-                    Toast.makeText(getContext(), "Success= " + success, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Note Successfully Added", Toast.LENGTH_SHORT).show();
+
+                    NavHostFragment.findNavController(SecondFragment.this)
+                            .navigate(R.id.action_SecondFragment_to_FirstFragment);
                 }
                 styleErrorInputs(view);
             }

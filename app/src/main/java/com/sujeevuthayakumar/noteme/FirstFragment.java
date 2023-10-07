@@ -44,7 +44,7 @@ public class FirstFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                noteArrayAdapter.getFilter().filter(newText);
+                customBaseAdapter.getFilter().filter(newText);
                 return false;
             }
         });
