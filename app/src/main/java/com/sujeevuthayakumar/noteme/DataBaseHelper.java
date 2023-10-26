@@ -54,6 +54,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return insert != -1;
     }
 
+//    public boolean deleteOne(NoteModel noteModel) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        String queryString = "SELECT * FROM " +
+//    }
+
     public List<NoteModel> getEveryone() {
         List<NoteModel> returnList = new ArrayList<>();
 

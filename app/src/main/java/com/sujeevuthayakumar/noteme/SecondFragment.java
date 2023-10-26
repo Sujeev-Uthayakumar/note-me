@@ -34,7 +34,6 @@ public class SecondFragment extends Fragment {
         binding.blue.setTextColor(Color.WHITE);
         this.noteColor = "blue";
         return binding.getRoot();
-
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {

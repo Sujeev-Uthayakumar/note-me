@@ -32,12 +32,12 @@ public class CustomBaseAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return noteModelList.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return noteModelList.get(i).getId();
     }
 
     @Override
