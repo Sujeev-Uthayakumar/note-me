@@ -1,5 +1,7 @@
 package com.sujeevuthayakumar.noteme;
 
+import java.util.Arrays;
+
 public class NoteModel {
 
     private int id;
@@ -7,6 +9,7 @@ public class NoteModel {
     private String subTitle;
     private String note;
     private String noteColor;
+    private byte[] image;
 
     public NoteModel(int id, String title, String subTitle, String note, String noteColor) {
         this.id = id;
@@ -59,6 +62,14 @@ public class NoteModel {
         this.noteColor = noteColor;
     }
 
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
     @Override
     public String toString() {
         return "NoteModel{" +
@@ -67,6 +78,7 @@ public class NoteModel {
                 ", subTitle='" + subTitle + '\'' +
                 ", note='" + note + '\'' +
                 ", noteColor='" + noteColor + '\'' +
+                ", image=" + Arrays.toString(image) +
                 '}';
     }
 }

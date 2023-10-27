@@ -15,6 +15,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public static final String COLUMN_NOTE = "NOTE";
     public static final String NOTE_TABLE = COLUMN_NOTE + "_TABLE";
+    public static final String COLUMN_NOTE_IMAGE = COLUMN_NOTE + "_IMAGE";
     public static final String COLUMN_NOTE_TITLE = COLUMN_NOTE + "_TITLE";
     public static final String COLUMN_NOTE_SUBTITLE = COLUMN_NOTE + "_SUBTITLE";
     public static final String COLUMN_NOTE_COLOR = "NOTE_COLOR";
@@ -30,6 +31,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + COLUMN_NOTE_TITLE + " TEXT, "
                 + COLUMN_NOTE_SUBTITLE + " TEXT, "
                 + COLUMN_NOTE + " TEXT, "
+                + COLUMN_NOTE_IMAGE + " BLOB, "
                 + COLUMN_NOTE_COLOR + " TEXT)";
 
         sqLiteDatabase.execSQL(createTableStatement);

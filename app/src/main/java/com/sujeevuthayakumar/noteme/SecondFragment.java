@@ -101,6 +101,20 @@ public class SecondFragment extends Fragment {
             }
         });
 
+        binding.deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DataBaseHelper dataBaseHelper = new DataBaseHelper(getContext());
+                if (noteModel != null) {
+                    dataBaseHelper.deleteOne(noteModel.getId());
+                    NavHostFragment.findNavController(SecondFragment.this)
+                            .navigate(R.id.action_SecondFragment_to_FirstFragment);
+                } else {
+                    Toast.makeText(getContext(), "Note Cannot be Deleted", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         binding.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
