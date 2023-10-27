@@ -54,10 +54,24 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return insert != -1;
     }
 
-//    public boolean deleteOne(NoteModel noteModel) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        String queryString = "SELECT * FROM " +
-//    }
+    public boolean updateOne(NoteModel noteModel) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_NOTE_TITLE, noteModel.getTitle());
+        cv.put(COLUMN_NOTE_SUBTITLE, noteModel.getSubTitle());
+        cv.put(COLUMN_NOTE, noteModel.getNote());
+        cv.put(COLUMN_NOTE_COLOR, noteModel.getNoteColor());
+
+        int update = db.update(NOTE_TABLE, cv, "id=?", new String[]{Integer.toString(noteModel.getId())});
+        return update != -1;
+    }
+
+    public boolean deleteOne(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int delete = db.delete(NOTE_TABLE, "id=?", new String[]{Integer.toString(id)});
+        return delete != -1;
+    }
 
     public List<NoteModel> getEveryone() {
         List<NoteModel> returnList = new ArrayList<>();

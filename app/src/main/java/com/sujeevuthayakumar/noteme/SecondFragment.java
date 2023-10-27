@@ -26,6 +26,7 @@ import org.w3c.dom.Node;
 public class SecondFragment extends Fragment {
 
     private FragmentSecondBinding binding;
+    private NoteModel noteModel;
     private SharedNoteViewModel viewModel;
     private String noteColor;
     @Override
@@ -41,20 +42,23 @@ public class SecondFragment extends Fragment {
 
         viewModel = new ViewModelProvider(getActivity()).get(SharedNoteViewModel.class);
         viewModel.getData().observe(getViewLifecycleOwner(), data -> {
-            binding.editTitle.setText(data.getTitle());
-            binding.editSubtitle.setText(data.getSubTitle());
-            binding.editNote.setText(data.getNote());
-            this.noteColor = data.getNoteColor();
-            binding.blue.setBackgroundColor(getResources().getColor(R.color.lightblue));
-            if (data.getNoteColor().equals("blue")) {
-                binding.editNote.setBackgroundColor(getResources().getColor(R.color.lightblue));
-                binding.blue.setBackgroundColor(getResources().getColor(R.color.purple));
-            } else if (data.getNoteColor().equals("red")) {
-                binding.editNote.setBackgroundColor(getResources().getColor(R.color.lightred));
-                binding.red.setBackgroundColor(getResources().getColor(R.color.purple));
-            } else {
-                binding.editNote.setBackgroundColor(getResources().getColor(R.color.lightyellow));
-                binding.yellow.setBackgroundColor(getResources().getColor(R.color.purple));
+            if (data != null) {
+                this.noteModel = data;
+                binding.editTitle.setText(data.getTitle());
+                binding.editSubtitle.setText(data.getSubTitle());
+                binding.editNote.setText(data.getNote());
+                this.noteColor = data.getNoteColor();
+                binding.blue.setBackgroundColor(getResources().getColor(R.color.lightblue));
+                if (data.getNoteColor().equals("blue")) {
+                    binding.editNote.setBackgroundColor(getResources().getColor(R.color.lightblue));
+                    binding.blue.setBackgroundColor(getResources().getColor(R.color.purple));
+                } else if (data.getNoteColor().equals("red")) {
+                    binding.editNote.setBackgroundColor(getResources().getColor(R.color.lightred));
+                    binding.red.setBackgroundColor(getResources().getColor(R.color.purple));
+                } else {
+                    binding.editNote.setBackgroundColor(getResources().getColor(R.color.lightyellow));
+                    binding.yellow.setBackgroundColor(getResources().getColor(R.color.purple));
+                }
             }
         });
         return binding.getRoot();
@@ -70,18 +74,24 @@ public class SecondFragment extends Fragment {
                     String title = binding.editTitle.getText().toString();
                     String subTitle = binding.editSubtitle.getText().toString();
                     String note = binding.editNote.getText().toString();
-
-                    NoteModel noteModel;
-                    try {
-                        noteModel = new NoteModel(-1, title, subTitle, note, noteColor);
-                    } catch (Exception e) {
-                        System.out.println("L");
-                        noteModel = new NoteModel(-1, "error", "error", "error", "error");
-                    }
-
                     DataBaseHelper dataBaseHelper = new DataBaseHelper(getContext());
-                    boolean success = dataBaseHelper.addOne(noteModel);
-                    Toast.makeText(getContext(), "Note Successfully Added", Toast.LENGTH_SHORT).show();
+                    if (noteModel != null) {
+                        NoteModel updateNoteModel;
+                        updateNoteModel = new NoteModel(noteModel.getId(), title, subTitle, note, noteColor);
+                        dataBaseHelper.updateOne(updateNoteModel);
+                        Toast.makeText(getContext(), "Note Successfully Updated", Toast.LENGTH_SHORT).show();
+                    } else {
+                        NoteModel noteModel;
+                        try {
+                            noteModel = new NoteModel(-1, title, subTitle, note, noteColor);
+                        } catch (Exception e) {
+                            System.out.println("L");
+                            noteModel = new NoteModel(-1, "error", "error", "error", "error");
+                        }
+
+                        boolean success = dataBaseHelper.addOne(noteModel);
+                        Toast.makeText(getContext(), "Note Successfully Added", Toast.LENGTH_SHORT).show();
+                    }
 
                     NavHostFragment.findNavController(SecondFragment.this)
                             .navigate(R.id.action_SecondFragment_to_FirstFragment);

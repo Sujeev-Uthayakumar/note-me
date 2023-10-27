@@ -43,6 +43,7 @@
         android:gravity="center" />
 
     <ImageView
+        android:id="@+id/delete_image"
         android:layout_gravity="right"
         android:padding="10sp"
         android:layout_width="wrap_content"

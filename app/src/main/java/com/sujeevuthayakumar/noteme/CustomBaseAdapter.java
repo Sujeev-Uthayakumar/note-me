@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +20,13 @@ public class CustomBaseAdapter extends BaseAdapter implements Filterable {
     List<NoteModel> noteModelList;
     List<NoteModel> mOriginalValues;
     LayoutInflater inflater;
+    DataBaseHelper dataBaseHelper;
 
     public CustomBaseAdapter(Context ctx, List<NoteModel> noteModelList) {
         this.context = ctx;
         this.noteModelList = noteModelList;
         inflater = LayoutInflater.from(ctx);
+        this.dataBaseHelper = new DataBaseHelper(ctx);
     }
 
     @Override
@@ -50,6 +54,18 @@ public class CustomBaseAdapter extends BaseAdapter implements Filterable {
         subtitleView.setText(noteModelList.get(i).getSubTitle());
         TextView noteView = (TextView) view.findViewById(R.id.list_note);
         noteView.setText(noteModelList.get(i).getNote());
+
+        ImageView imageView = view.findViewById(R.id.delete_image);
+        imageView.setOnClickListener(v -> {
+            long noteId = getItemId(i);
+            boolean success = dataBaseHelper.deleteOne((int) noteId);
+            if (success) {
+                this.noteModelList.remove(i);
+                notifyDataSetChanged();
+                Toast.makeText(this.context, "Note Successfully Deleted", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         return view;
     }
 
