@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.sujeevuthayakumar.noteme.databinding.FragmentFirstBinding;
@@ -21,6 +23,8 @@ import java.util.List;
 public class FirstFragment extends Fragment {
 
     private FragmentFirstBinding binding;
+    private SharedNoteViewModel viewModel;
+
 
     @Override
     public View onCreateView(
@@ -31,7 +35,7 @@ public class FirstFragment extends Fragment {
         List<NoteModel> noteModelList = dataBaseHelper.getEveryone();
 
         ArrayAdapter<NoteModel> noteArrayAdapter = new ArrayAdapter<NoteModel>(getContext(), android.R.layout.simple_list_item_1, noteModelList);
-
+        viewModel = new ViewModelProvider(getActivity()).get(SharedNoteViewModel.class);
         System.out.println(noteModelList);
         binding = FragmentFirstBinding.inflate(inflater, container, false);
         CustomBaseAdapter customBaseAdapter = new CustomBaseAdapter(getContext(), noteModelList);
@@ -42,7 +46,10 @@ public class FirstFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 NavHostFragment.findNavController(FirstFragment.this)
                         .navigate(R.id.action_FirstFragment_to_SecondFragment);
+
                 // TODO: Send data to SecondFragment
+                NoteModel selectedNote = noteArrayAdapter.getItem(position);
+                viewModel.setData(selectedNote);
             }
         });
 

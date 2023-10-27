@@ -14,14 +14,19 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.sujeevuthayakumar.noteme.databinding.FragmentSecondBinding;
+
+import org.w3c.dom.Node;
 
 public class SecondFragment extends Fragment {
 
     private FragmentSecondBinding binding;
+    private SharedNoteViewModel viewModel;
     private String noteColor;
     @Override
     public View onCreateView(
@@ -33,6 +38,25 @@ public class SecondFragment extends Fragment {
         binding.blue.setBackgroundColor(getResources().getColor(R.color.purple));
         binding.blue.setTextColor(Color.WHITE);
         this.noteColor = "blue";
+
+        viewModel = new ViewModelProvider(getActivity()).get(SharedNoteViewModel.class);
+        viewModel.getData().observe(getViewLifecycleOwner(), data -> {
+            binding.editTitle.setText(data.getTitle());
+            binding.editSubtitle.setText(data.getSubTitle());
+            binding.editNote.setText(data.getNote());
+            this.noteColor = data.getNoteColor();
+            binding.blue.setBackgroundColor(getResources().getColor(R.color.lightblue));
+            if (data.getNoteColor().equals("blue")) {
+                binding.editNote.setBackgroundColor(getResources().getColor(R.color.lightblue));
+                binding.blue.setBackgroundColor(getResources().getColor(R.color.purple));
+            } else if (data.getNoteColor().equals("red")) {
+                binding.editNote.setBackgroundColor(getResources().getColor(R.color.lightred));
+                binding.red.setBackgroundColor(getResources().getColor(R.color.purple));
+            } else {
+                binding.editNote.setBackgroundColor(getResources().getColor(R.color.lightyellow));
+                binding.yellow.setBackgroundColor(getResources().getColor(R.color.purple));
+            }
+        });
         return binding.getRoot();
     }
 
@@ -61,6 +85,7 @@ public class SecondFragment extends Fragment {
 
                     NavHostFragment.findNavController(SecondFragment.this)
                             .navigate(R.id.action_SecondFragment_to_FirstFragment);
+
                 }
                 styleErrorInputs(view);
             }
@@ -69,6 +94,7 @@ public class SecondFragment extends Fragment {
         binding.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
+                System.out.println("hi " + checkedId);
                 resetButtons(view);
                 RadioButton checkedButton = view.findViewById(checkedId);
                 EditText editText = view.findViewById(R.id.edit_note);
