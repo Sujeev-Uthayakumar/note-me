@@ -41,7 +41,7 @@
         <EditText
             android:id="@+id/edit_note"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="200dp"
             android:layout_marginStart="25dp"
             android:layout_marginTop="25dp"
             android:layout_marginEnd="25dp"
@@ -54,23 +54,50 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_subtitle_layout" />
 
-        <Button
+        <ImageButton
             android:id="@+id/deleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="24dp"
-            android:text="Delete"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/baseline_delete_24"
+            android:background="@drawable/rounded_corners"
+            android:padding="7dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
-
-        <Button
+        <ImageButton
             android:id="@+id/submitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="50dp"
-            android:text="Done"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="52dp"
+            android:src="@drawable/baseline_check_24"
+            android:background="@drawable/rounded_corners"
+            android:padding="7dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+        <ImageButton
+            android:id="@+id/uploadButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="228dp"
+            android:src="@drawable/baseline_file_upload_24"
+            android:background="@drawable/rounded_corners"
+            android:padding="7dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+        <ImageButton
+            android:id="@+id/cameraButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="136dp"
+            android:src="@drawable/baseline_camera_alt_24"
+            android:background="@drawable/rounded_corners"
+            android:padding="7dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
@@ -88,35 +115,44 @@
 
             <RadioButton
                 android:id="@+id/blue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_margin="16dp"
                 android:background="@color/lightblue"
                 android:button="@android:color/transparent"
                 android:elevation="4dp"
-                android:padding="20dp" />
+                android:padding="10dp" />
 
             <RadioButton
                 android:id="@+id/red"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_margin="16dp"
                 android:background="@color/lightred"
                 android:button="@android:color/transparent"
                 android:elevation="4dp"
                 android:maxWidth="100dp"
-                android:padding="20dp" />
+                android:padding="10dp" />
 
             <RadioButton
                 android:id="@+id/yellow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_margin="16dp"
                 android:background="@color/lightyellow"
                 android:button="@android:color/transparent"
                 android:elevation="4dp"
-                android:padding="20dp" />
+                android:padding="10dp" />
         </RadioGroup>
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="52dp"
+            android:text="Done"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/submitButton" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

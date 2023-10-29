@@ -50,6 +50,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_NOTE_SUBTITLE, noteModel.getSubTitle());
         cv.put(COLUMN_NOTE, noteModel.getNote());
         cv.put(COLUMN_NOTE_COLOR, noteModel.getNoteColor());
+        cv.put(COLUMN_NOTE_IMAGE, noteModel.getImage());
 
         long insert = db.insert(NOTE_TABLE, null, cv);
 
