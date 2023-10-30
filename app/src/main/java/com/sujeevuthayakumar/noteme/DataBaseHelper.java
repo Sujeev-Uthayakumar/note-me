@@ -50,7 +50,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_NOTE_SUBTITLE, noteModel.getSubTitle());
         cv.put(COLUMN_NOTE, noteModel.getNote());
         cv.put(COLUMN_NOTE_COLOR, noteModel.getNoteColor());
-        cv.put(COLUMN_NOTE_IMAGE, noteModel.getImage());
+
+        if (noteModel.getImage() != null) {
+            cv.put(COLUMN_NOTE_IMAGE, noteModel.getImage());
+        }
 
         long insert = db.insert(NOTE_TABLE, null, cv);
 
@@ -65,6 +68,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_NOTE_SUBTITLE, noteModel.getSubTitle());
         cv.put(COLUMN_NOTE, noteModel.getNote());
         cv.put(COLUMN_NOTE_COLOR, noteModel.getNoteColor());
+
+        if (noteModel.getImage() != null) {
+            cv.put(COLUMN_NOTE_IMAGE, noteModel.getImage());
+        }
 
         int update = db.update(NOTE_TABLE, cv, "id=?", new String[]{Integer.toString(noteModel.getId())});
         return update != -1;
@@ -92,9 +99,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 String noteTitle = cursor.getString(1);
                 String noteSubtitle = cursor.getString(2);
                 String note = cursor.getString(3);
-                String noteColor = cursor.getString(4);
+                byte[] noteImage = cursor.getBlob(4);
+                String noteColor = cursor.getString(5);
 
-                NoteModel newNote = new NoteModel(noteID, noteTitle, noteSubtitle, note, noteColor);
+                NoteModel newNote = new NoteModel(noteID, noteTitle, noteSubtitle, note, noteColor, noteImage);
                 returnList.add(newNote);
             } while (cursor.moveToNext());
         } else {

@@ -11,6 +11,15 @@ public class NoteModel {
     private String noteColor;
     private byte[] image;
 
+    public NoteModel(int id, String title, String subTitle, String note, String noteColor, byte[] image) {
+        this.id = id;
+        this.title = title;
+        this.subTitle = subTitle;
+        this.note = note;
+        this.noteColor = noteColor;
+        this.image = image;
+    }
+
     public NoteModel(int id, String title, String subTitle, String note, String noteColor) {
         this.id = id;
         this.title = title;

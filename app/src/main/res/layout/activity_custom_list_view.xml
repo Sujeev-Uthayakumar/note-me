@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/list_title"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
@@ -21,7 +21,7 @@
 
     <TextView
         android:id="@+id/list_subtitle"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15sp"
@@ -32,7 +32,7 @@
 
     <TextView
         android:id="@+id/list_note"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="11sp"
@@ -48,6 +48,6 @@
         android:padding="10sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/baseline_remove_circle_24" />
+        android:src="@drawable/baseline_delete_24" />
 
 </LinearLayout>

@@ -59,58 +59,62 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="48dp"
-            android:layout_marginTop="12dp"
-            android:src="@drawable/baseline_delete_24"
+            android:layout_marginTop="20dp"
             android:background="@drawable/rounded_corners"
+            android:backgroundTint="#EADEFF"
             android:padding="7dp"
+            android:src="@drawable/baseline_delete_24"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+            app:layout_constraintTop_toBottomOf="@+id/image" />
+
         <ImageButton
             android:id="@+id/submitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="52dp"
-            android:src="@drawable/baseline_check_24"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="48dp"
             android:background="@drawable/rounded_corners"
+            android:backgroundTint="#EADEFF"
             android:padding="7dp"
+            android:src="@drawable/baseline_check_24"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+            app:layout_constraintTop_toBottomOf="@+id/image" />
 
         <ImageButton
             android:id="@+id/uploadButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="228dp"
-            android:src="@drawable/baseline_file_upload_24"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/rounded_corners"
+            android:backgroundTint="#EADEFF"
             android:padding="7dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+            android:src="@drawable/baseline_file_upload_24"
+            app:layout_constraintStart_toEndOf="@+id/deleteButton"
+            app:layout_constraintTop_toBottomOf="@+id/image" />
 
         <ImageButton
             android:id="@+id/cameraButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="136dp"
-            android:src="@drawable/baseline_camera_alt_24"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="48dp"
             android:background="@drawable/rounded_corners"
+            android:backgroundTint="#EADEFF"
             android:padding="7dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+            android:src="@drawable/baseline_camera_alt_24"
+            app:layout_constraintEnd_toStartOf="@+id/submitButton"
+            app:layout_constraintTop_toBottomOf="@+id/image" />
 
         <RadioGroup
             android:id="@+id/radioGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="25dp"
             android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@+id/submitButton"
             app:layout_constraintTop_toBottomOf="@+id/edit_note"
+            app:layout_constraintVertical_bias="0.0"
             tools:layout_editor_absoluteX="0dp">
 
             <RadioButton
@@ -144,16 +148,17 @@
                 android:elevation="4dp"
                 android:padding="10dp" />
         </RadioGroup>
+
         <ImageView
             android:id="@+id/image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="52dp"
-            android:text="Done"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_margin="12dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/submitButton" />
-
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

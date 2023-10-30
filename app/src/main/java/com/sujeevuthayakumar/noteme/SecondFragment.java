@@ -1,27 +1,38 @@
 package com.sujeevuthayakumar.noteme;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
+import android.provider.MediaStore;
+import android.Manifest;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.sujeevuthayakumar.noteme.databinding.FragmentSecondBinding;
 
-import org.w3c.dom.Node;
+import java.io.ByteArrayOutputStream;
 
 public class SecondFragment extends Fragment {
 
@@ -29,6 +40,35 @@ public class SecondFragment extends Fragment {
     private NoteModel noteModel;
     private SharedNoteViewModel viewModel;
     private String noteColor;
+    private ImageView imageView;
+    private String currentPhotoPath;
+
+    private final ActivityResultLauncher<String> galleryPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+        if (isGranted) {
+            selectImageFromGallery();
+        }
+    });
+
+    private final ActivityResultLauncher<String> cameraPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+        if (isGranted) {
+            captureImageFromCamera();
+        }
+    });
+
+    private final ActivityResultLauncher<Intent> selectImageActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+            Uri selectedImageUri = result.getData().getData();
+            imageView.setImageURI(selectedImageUri);
+        }
+    });
+
+    private final ActivityResultLauncher<Intent> captureImageActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            Bitmap bitmap = (Bitmap) result.getData().getExtras().get("data");
+            imageView.setImageBitmap(bitmap);
+        }
+    });
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -59,8 +99,13 @@ public class SecondFragment extends Fragment {
                     binding.editNote.setBackgroundColor(getResources().getColor(R.color.lightyellow));
                     binding.yellow.setBackgroundColor(getResources().getColor(R.color.purple));
                 }
+                if (data.getImage() != null) {
+                    imageView.setImageBitmap(BitmapFactory.decodeByteArray(data.getImage(), 0, data.getImage().length));
+                }
             }
         });
+
+        imageView = binding.image;
         return binding.getRoot();
     }
 
@@ -78,18 +123,24 @@ public class SecondFragment extends Fragment {
                     if (noteModel != null) {
                         NoteModel updateNoteModel;
                         updateNoteModel = new NoteModel(noteModel.getId(), title, subTitle, note, noteColor);
+                        if (imageView.getDrawable() != null){
+                            updateNoteModel.setImage(bitmapToByteArray(((BitmapDrawable) imageView.getDrawable()).getBitmap()));
+                        }
                         dataBaseHelper.updateOne(updateNoteModel);
                         Toast.makeText(getContext(), "Note Successfully Updated", Toast.LENGTH_SHORT).show();
                     } else {
                         NoteModel noteModel;
                         try {
                             noteModel = new NoteModel(-1, title, subTitle, note, noteColor);
+                            if (imageView.getDrawable() != null){
+                                noteModel.setImage(bitmapToByteArray(((BitmapDrawable) imageView.getDrawable()).getBitmap()));
+                            }
                         } catch (Exception e) {
-                            System.out.println("L");
                             noteModel = new NoteModel(-1, "error", "error", "error", "error");
                         }
 
                         boolean success = dataBaseHelper.addOne(noteModel);
+                        System.out.printf(noteModel.toString());
                         Toast.makeText(getContext(), "Note Successfully Added", Toast.LENGTH_SHORT).show();
                     }
 
@@ -112,6 +163,13 @@ public class SecondFragment extends Fragment {
                 } else {
                     Toast.makeText(getContext(), "Note Cannot be Deleted", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        binding.uploadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectImageFromGallery();
             }
         });
 
@@ -141,6 +199,17 @@ public class SecondFragment extends Fragment {
                 System.out.println(noteColor);
             }
         });
+
+        binding.cameraButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    cameraPermissionLauncher.launch(Manifest.permission.CAMERA);
+                } else {
+                    captureImageFromCamera();
+                }
+            }
+        });
     }
 
     private void resetButtons(View view) {
@@ -157,9 +226,19 @@ public class SecondFragment extends Fragment {
         yellow.setBackgroundColor(getResources().getColor(R.color.lightyellow));
     }
 
+    private void selectImageFromGallery() {
+        Intent selectImageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        selectImageActivityResultLauncher.launch(selectImageIntent);
+    }
+
+    private void captureImageFromCamera() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        captureImageActivityResultLauncher.launch(takePictureIntent);
+    }
+
     private boolean areInputsEmpty(View view) {
-        String titleText = binding.editTitle.getText().toString();
-        return titleText.isEmpty();
+            String titleText = binding.editTitle.getText().toString();
+            return titleText.isEmpty();
     }
 
     // Function to style inputs based on whether they are required
@@ -196,6 +275,12 @@ public class SecondFragment extends Fragment {
         } else {
             binding.editTitleLayout.setError(null);
         }
+    }
+
+    private byte[] bitmapToByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        return stream.toByteArray();
     }
 
     @Override
